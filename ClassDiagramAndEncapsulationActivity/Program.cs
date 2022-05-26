@@ -1,14 +1,7 @@
-﻿Student student = Student.GetInstance("Hayley", "C", 1);
-
-if (student != null)
-{
-    student.DisplayStudentName();
-    student.DisplayStudentGrade();
-    student.Downgrade();
-    student.Upgrade();
-    student.Upgrade();
-}
-else
-{
-    Console.WriteLine("Error: Please try again with valid inputs for Grade or Group");
-}
+﻿Student student = new("Hayley", "C", 2);
+Console.WriteLine(student.Name);
+Console.WriteLine(student.Grade);
+student.Upgrade();
+Console.WriteLine(student.Grade);
+student.Downgrade();
+Console.WriteLine(student.Grade);

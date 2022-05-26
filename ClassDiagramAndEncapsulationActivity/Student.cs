@@ -1,68 +1,47 @@
-﻿public class Student
+﻿
+public class Student
 {
-    private string Name { get; set; }
-    private string Grade { get; set; }
+    public string Name { get; private set; }
+    public Grades Grade { get; private set; }
     private int Group { get; set; }
-    private string secretNickName { get; set; }
-    private string MySecretNickName = "HowdyDoodle";
-    private static string[] validGrades = { "A", "B", "C", "D", "E", "F", };
-    private static int[] validGroups = { 1, 2, 3, 4, 5, };
+    private string SecretNickName { get; set; }
+    public enum Grades { F, E, D, C, B, A, };
+    private static readonly int[] Groups = { 1, 2, 3, 4, 5, };
 
-    private Student(string _name, string _grade, int _group)
+    public Student(string name, string grade, int group)
     {
-        Name = _name;
-        Grade = _grade;
-        Group = _group;
-        secretNickName = MySecretNickName;
+        Name = name;
+        IsValidGrade(grade);
+        IsValidGroup(group);
+        SecretNickName = "MySecretNickName";
     }
 
-    public static Student GetInstance(string _name, string _grade, int _group)
+    private void IsValidGrade(string _grade)
     {
-        if (IsValidGrade(_grade) && IsValidGroup(_group))
+        _ = _grade switch
         {
-            Student student = new(_name, _grade, _group);
-            return student;
-        }
+            "A" => Grade = Grades.A,
+            "B" => Grade = Grades.B,
+            "C" => Grade = Grades.C,
+            "D" => Grade = Grades.D,
+            "E" => Grade = Grades.E,
+            "F" => Grade = Grades.F,
+            _ => throw new ArgumentException("Grade parameter out of range")
+        };
+    }
+
+    private void IsValidGroup(int _group)
+    {
+        if (Groups.Contains(_group))
+            Group = _group;
         else
-        {
-            return null;
-        }
+            throw new ArgumentException("Group parameter out of range");
     }
 
-    public void DisplayStudentName()
-    {
-        Console.WriteLine($"Student's name is {Name}");
-    }
+    public void Upgrade() =>
+        Grade++;
 
-    public void DisplayStudentGrade()
-    {
-        Console.WriteLine($"Student's grade is {Grade}");
-    }
-
-    private static bool IsValidGrade(string grade)
-    {
-        return validGrades.Contains(grade);
-    }
-
-    private static bool IsValidGroup(int group)
-    {
-        return validGroups.Contains(group);
-    }
-
-    public void Upgrade()
-    {
-        char newGrade = Convert.ToChar(Grade);
-        char upgradedGrade = (char)(newGrade - 1);
-        Console.WriteLine($"The new grade following the upgrade is: {(char)(newGrade - 1)}");
-        Grade = upgradedGrade.ToString();
-    }
-
-    public void Downgrade()
-    {
-        char newGrade = Convert.ToChar(Grade);
-        char upgradedGrade = (char)(newGrade + 1);
-        Console.WriteLine($"The new grade following the downgrade is: {(char)(newGrade + 1)}");
-        Grade = upgradedGrade.ToString();
-    }
+    public void Downgrade() =>
+        Grade--;
 }
 
